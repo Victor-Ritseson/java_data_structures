@@ -166,7 +166,7 @@ public class simpleExpressionTree {
 	public static void main(String args[]) {
 		 
 		simpleExpressionTree et = new simpleExpressionTree();
-        String postfix = "12+12*5*-";
+        String postfix = "9+2*2/3";
         char[] charArray = postfix.toCharArray();
         et.createTree(charArray);
         et.printInOrder();
