@@ -1,6 +1,10 @@
 package ExpressionTree;
 
 import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class simpleExpressionTree {
 	private Node root;
@@ -47,12 +51,26 @@ public class simpleExpressionTree {
 	 * @param s string with expression
 	 * 
 	 */
-	public void creatTree(String s) {
-		char[] temp = new char[s.length()]; 
-		for(int i = 0; i < s.length(); i++) {
-			temp[i] = s.charAt(i);
-		}
-		createTree(temp);
+	public Node createTreeV2(List ys) {
+//		List<char[]> ys = Arrays.asList(xs);
+		System.out.print("YS" + ys);
+		
+		Node temp = new Node((char)ys.get(0));
+		
+		if(!isOperator(temp)) {
+			
+			if(root == null) {
+				root = temp;
+				return temp;
+			}
+			ys.remove(0);
+			temp.left = createTreeV2(ys);
+			
+			temp.right = createTreeV2(ys);
+			}
+		root = temp;
+		return temp;
+		
 		
 	}
 	
@@ -166,12 +184,26 @@ public class simpleExpressionTree {
 	public static void main(String args[]) {
 		 
 		simpleExpressionTree et = new simpleExpressionTree();
-        String postfix = "9+2*2/3";
-        char[] charArray = postfix.toCharArray();
-        et.createTree(charArray);
+        String postfix = "*+84-7/5";
+        
+        List test = new ArrayList();
+        test.add('*');
+        test.add('+');
+        test.add('8');
+        test.add('4');
+        test.add('-');
+        test.add('7');
+        test.add('/');
+        test.add('5');
+  
+        
+        
+//        char[] charArray = postfix.toCharArray();
+//        et.createTreeV2(charArray);
+        et.createTreeV2(test);
         et.printInOrder();
         System.out.println();
-        System.out.println(et.calculateTree());
+       // System.out.println(et.calculateTree());
  
     }
 
