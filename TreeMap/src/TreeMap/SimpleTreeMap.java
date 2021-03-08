@@ -1,11 +1,27 @@
 package TreeMap;
 
 import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class SimpleTreeMap<K, V> {
 	private TreeNode<K,V> root;
 	private int size;
 	private Comparator<V> comp;
+	
+	
+	public static void main(String[] args) {
+		SimpleTreeMap<String, Integer> et = new SimpleTreeMap();
+		et.put("hejsan", 2);
+		et.put("hej", 3);
+		et.put("Hejdå", 10);
+		System.out.println(et.get("hej"));
+	}
+	
+	
+	
+	
 	
 	public SimpleTreeMap() {
 		size = 0;
@@ -71,10 +87,97 @@ public class SimpleTreeMap<K, V> {
 	}
 	
 
+	public boolean containsKey(Object searchKey) {
+		if(searchKey == null) {
+			throw new NullPointerException();
+		} else {
+			Set<K> keys = keySet();
+			return keys.contains((K) searchKey);	
+		}
+	}
 	
-
+	public Set<K> keySet(){
+		Set<K> temp = new TreeSet<K>();
+		if(root == null) {
+			return temp;
+		} else {
+			return recKeySet(root, temp);
+		}
+	}
+	
+	private Set<K> recKeySet(TreeNode<K,V> n, Set<K> list){
+		if(n != null) {
+			list.add(n.key);
+			if(n.left != null) {
+				recKeySet(n.left, list);
+			}
+			
+			if(n.right != null) {
+				recKeySet(n.right, list);
+			}
+		}
+		return list;
+	}
 	
 	
+	public K firstKey() {
+		if(root == null) {
+			return null;
+		} else {
+			return root.key;
+		}
+	}
+	
+	public V firstValue() {
+		if(root == null) {
+			return null;
+		} else {
+			return root.value;
+		}
+	}
+	
+	public V get(Object key) {
+		if(root == null) {
+			return null;
+		} else {
+			return recGet(root, (K)key);
+		}
+	}
+	
+	private V recGet(TreeNode<K,V> n, K searchKey) {
+		if(root != null) {
+			if(n.key.equals(searchKey)) {
+				return n.value;
+			} else {
+				if(n.left != null) {
+					return recGet(n.left,searchKey);
+				} else if(n.right != null) {
+					return recGet(n.right, searchKey);
+				}	
+			}
+		}
+		
+		return null;
+	}
+	
+	
+	public void balanceTree() {
+		if(root != null) {
+			recBalanceTree(root, null);
+		}
+	}
+	
+	private void recBalanceTree(TreeNode<K,V> n, TreeNode<K,V> newRoot ) {
+		TreeNode<K,V> temp = null;;
+		if(n != null) {
+			
+			
+			
+			
+		}
+		
+		
+	}
 	
 	
 
