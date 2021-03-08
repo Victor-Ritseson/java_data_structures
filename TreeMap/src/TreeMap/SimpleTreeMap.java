@@ -1,6 +1,7 @@
 package TreeMap;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -9,19 +10,6 @@ public class SimpleTreeMap<K, V> {
 	private TreeNode<K,V> root;
 	private int size;
 	private Comparator<V> comp;
-	
-	
-	public static void main(String[] args) {
-		SimpleTreeMap<String, Integer> et = new SimpleTreeMap();
-		et.put("hejsan", 2);
-		et.put("hej", 3);
-		et.put("Hejdå", 10);
-		System.out.println(et.get("hej"));
-	}
-	
-	
-	
-	
 	
 	public SimpleTreeMap() {
 		size = 0;
@@ -45,6 +33,20 @@ public class SimpleTreeMap<K, V> {
 			return recPut(addItem, root);
 		}
 	}
+	
+	public void putAll(SimpleTreeMap<K,V> add) {
+		if(root == null) {
+			root = add.root;
+			size = add.size;
+		} else {
+			Set<MyEntry<K,V>> temp = add.entrySet();
+			for(MyEntry<K,V> s : temp) {
+				put(s.getKey(),s.getValue());
+			}	
+		}
+	}
+	
+	
 	
 	private V recPut(TreeNode<K,V> newItem, TreeNode<K,V> n) {
 		int cc = comp.compare(n.value, newItem.value);
@@ -120,6 +122,32 @@ public class SimpleTreeMap<K, V> {
 	}
 	
 	
+	public Set<MyEntry<K,V>> entrySet(){
+		Set<MyEntry<K,V>> temp = new HashSet<MyEntry<K,V>>();
+		if(root == null) {
+			return temp;
+		} else {
+			return entrySet(root, temp);
+		}
+	}
+	
+	public Set<MyEntry<K,V>> entrySet(TreeNode<K,V> n, Set<MyEntry<K,V>> list){
+		if(n != null) {
+			MyEntry<K,V> entry = new MyEntry(n.key,n.value);
+			list.add(entry);
+			
+			if(n.left != null) {
+				list = entrySet(n.left, list);
+			}
+			if(n.right != null) {
+				list = entrySet(n.right, list);
+			}
+		}
+		return list;
+	}
+	
+	
+	
 	public K firstKey() {
 		if(root == null) {
 			return null;
@@ -160,28 +188,8 @@ public class SimpleTreeMap<K, V> {
 		return null;
 	}
 	
-	
-	public void balanceTree() {
-		if(root != null) {
-			recBalanceTree(root, null);
-		}
-	}
-	
-	private void recBalanceTree(TreeNode<K,V> n, TreeNode<K,V> newRoot ) {
-		TreeNode<K,V> temp = null;;
-		if(n != null) {
-			
-			
-			
-			
-		}
-		
-		
-	}
-	
-	
 
-	
+		
 	
 	private static class TreeNode<K,V>{
 		private K key;
